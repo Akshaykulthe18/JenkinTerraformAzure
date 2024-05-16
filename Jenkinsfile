@@ -2,10 +2,6 @@ pipeline {
     agent any; 
     environment {
        MY_CRED = credentials('azurelogin')
-       ARM_CLIENT_ID     = "1e79ea61-0414-4937-9ab8-92f97632f1ca"
-       ARM_CLIENT_SECRET = "PKf8Q~ZBsiKVSE1v91gCLL_LSwCCF6h3.uNsFaYg"
-       ARM_SUBSCRIPTION_ID = "2c232cc6-1a70-4669-bd20-3ade791c35ce"
-       ARM_TENANT_ID = "c48e4112-9a8f-418b-a115-e5929b0c550a"
     } 
     stages {
         stage('Git checkout'){
@@ -15,7 +11,7 @@ pipeline {
         }
         stage('azurelogin') {
             steps {
-                sh 'az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET -t $ARM_TENANT_ID'
+                sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
             }
         }
         stage('Terraform Init'){
