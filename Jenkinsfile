@@ -1,8 +1,8 @@
 pipeline {
-    agent any; 
+    agent any;
     environment {
-       MY_CRED = credentials('azurelogin')
-    } 
+        MY_CRED = credentials('azurelogin')
+    }
     stages {
         stage('Git checkout') {
             steps {
@@ -16,22 +16,54 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                sh """
+                echo "Initialising Terraform"
+                terraform init
+                """
             }
         }
         stage('Terraform Validate') {
             steps {
-                sh 'terraform validate'
+                sh """
+                echo "validating Terraform Code"
+                terraform validate
+                """
             }
         }
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
+                withCredentials([
+                    azureServicePrincipal(
+                        credentialsId: 'azurelogin',
+                        subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                        clientIdVariable: 'ARM_CLIENT_ID',
+                        clientSecretVariable: 'ARM_CLIENT_SECRET',
+                        tenantIdVariable: 'ARM_TENANT_ID'
+                    )
+                ]) {
+                    sh """
+                    echo "Plan Terraform"
+                    terraform plan
+                    """
+                }
             }
         }
         stage('Terraform apply') {
             steps {
-                sh 'terraform apply -lock=false -auto-approve'
+                withCredentials([
+                    azureServicePrincipal(
+                        credentialsId: 'azurelogin',
+                        subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                        clientIdVariable: 'ARM_CLIENT_ID',
+                        clientSecretVariable: 'ARM_CLIENT_SECRET',
+                        tenantIdVariable: 'ARM_TENANT_ID'
+                    )
+                ]) {
+                    sh """
+                    echo "Apply Terraform"
+                    terraform apply -lock=false -auto-approve
+                    """
+                }
             }
         }
     }
@@ -39,6 +71,7 @@ pipeline {
         failure {
             echo "Jenkins Build Failed"
         }
+
         success {
             echo "Jenkins Build Success"
         }
