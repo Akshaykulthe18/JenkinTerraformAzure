@@ -4,7 +4,7 @@ pipeline {
        MY_CRED = credentials('azurelogin')
     } 
     stages {
-        stage('Git checkout'){
+        stage('Git checkout') {
             steps {
                 git 'https://github.com/S-I-N-D-H-U-J-A/JenkinTerraformAzure'
             }
@@ -14,64 +14,36 @@ pipeline {
                 sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
             }
         }
-        stage('Terraform Init'){
-            steps{
-                    sh """                    
-                    echo "Initialising Terraform"
-                    terraform init
-                    """
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
             }
         }
-        stage('Terraform Validate'){
+        stage('Terraform Validate') {
             steps {
-                    sh """                    
-                    echo "validating Terraform Code"
-                    terraform validate
-                    """
+                sh 'terraform validate'
             }
         }
-        stage('Terraform Plan'){
+        stage('Terraform Plan') {
             steps {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'azurelogin',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                )]) {
-                        sh """                    
-                        echo "Plan Terraform"
-                        terraform plan
-                        """
-                           }
-                 }
+                sh 'terraform plan'
+            }
         }
         stage('Terraform apply') {
             steps {
-                withCredentials([azureServicePrincipal(
-                credentialsId: 'azurelogin',
-                subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                clientIdVariable: 'ARM_CLIENT_ID',
-                clientSecretVariable: 'ARM_CLIENT_SECRET',
-                tenantIdVariable: 'ARM_TENANT_ID')]){
-                    sh """                    
-                        echo "Apply Terraform"
-                        terraform apply -lock=false -auto-approve
-                        """
-                }
+                sh 'terraform apply -lock=false -auto-approve'
             }
         }
     }
-post {
-    failure {
-                echo "Jenkins Build Failed"
-            }
-    
-    success {
-                echo "Jenkins Build Success"
-            }
-    always {
-        cleanWs()
-           }
+    post {
+        failure {
+            echo "Jenkins Build Failed"
+        }
+        success {
+            echo "Jenkins Build Success"
+        }
+        always {
+            cleanWs()
+        }
     }
 }
