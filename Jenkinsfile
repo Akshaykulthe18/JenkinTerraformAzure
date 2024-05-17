@@ -16,6 +16,7 @@ pipeline {
             steps{
                 echo 'Initialising Terraform'
                 bat '''
+                    set PATH=C:\terraform;%PATH%
                     terraform init
                 '''
             }
