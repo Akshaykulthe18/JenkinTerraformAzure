@@ -16,7 +16,7 @@ pipeline {
             steps{
                     bat """                    
                     echo "Initialising Terraform"
-                    bat 'terraform init'
+                    start 'terraform init'
                     """
             }
         }
