@@ -53,7 +53,7 @@ pipeline {
                 clientSecretVariable: 'ARM_CLIENT_SECRET',
                 tenantIdVariable: 'ARM_TENANT_ID')]){
                     echo "Apply Terraform"
-                    bat 'C:\\terraform\\terraform.exe apply -lock=false -auto-approve'
+                    bat 'C:\\terraform\\terraform.exe apply'
                 }
             }
         }
