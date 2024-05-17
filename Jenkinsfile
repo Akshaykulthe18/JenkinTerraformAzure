@@ -3,15 +3,15 @@ pipeline {
     agent any; 
     environment {
        MY_CRED = credentials('azurelogin')
-       ARM_TENANT_ID       = "c48e4112-9a8f-418b-a115-e5929b0c550a"
+       
     } 
     stages {
-        
-        stage('azurelogin') {
+        stage('Git checkout'){
             steps {
-                bat 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
+                git 'https://github.com/S-I-N-D-H-U-J-A/JenkinTerraformAzure'
             }
         }
+        
         stage('Terraform Init'){
             steps{
                     bat """                    
