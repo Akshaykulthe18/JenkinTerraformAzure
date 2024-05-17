@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     environment {
-       MY_CRED = credentials('azurelogin')
+       MY_CRED = credentials('e9138bd2-49ab-47d3-92d4-1e536603e57a')
        PATH = "C:\\terraform;${env.PATH}"
     } 
     stages {
