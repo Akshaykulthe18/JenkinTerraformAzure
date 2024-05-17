@@ -62,9 +62,9 @@ pipeline {
             steps {
                     echo 'Validating Terraform'
                     bat 'C:\\terraform\\terraform.exe validate'
-            }
-    }
-    }
+                    }
+        }
+                }
 post {
     failure {
                 echo "Jenkins Build Failed"
