@@ -3,12 +3,18 @@ pipeline {
     agent any; 
     environment {
        MY_CRED = credentials('azurelogin')
-       
+       PATH = "C:\terraform;${env.PATH}"
     } 
     stages {
         stage('Git checkout'){
             steps {
                 git 'https://github.com/S-I-N-D-H-U-J-A/JenkinTerraformAzure'
+            }
+        }
+
+         stage('Check PATH') {
+            steps {
+                bat 'echo %PATH%'
             }
         }
         
