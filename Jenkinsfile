@@ -27,10 +27,7 @@ pipeline {
         stage('Terraform Validate'){
             steps {
                     echo 'Validating Terraform'
-                    bat '''
-                        
-                        terraform validate
-                    '''
+                    bat 'C:\\terraform\\terraform.exe validate'
             }
         }
         stage('Terraform Plan'){
@@ -43,9 +40,7 @@ pipeline {
                     tenantIdVariable: 'ARM_TENANT_ID'
                 )]) {
                         echo "Plan Terraform"
-                        bat """                    
-                            terraform plan
-                        """
+                        bat 'C:\\terraform\\terraform.exe plan'
                            }
                  }
         }
@@ -58,9 +53,7 @@ pipeline {
                 clientSecretVariable: 'ARM_CLIENT_SECRET',
                 tenantIdVariable: 'ARM_TENANT_ID')]){
                     echo "Apply Terraform"
-                    bat """                    
-                        terraform apply -lock=false -auto-approve
-                        """
+                    bat 'C:\\terraform\\terraform.exe apply -lock=false -auto-approve'
                 }
             }
         }
