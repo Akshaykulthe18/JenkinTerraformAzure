@@ -40,7 +40,7 @@ pipeline {
                     tenantIdVariable: 'ARM_TENANT_ID'
                 )]) {
                         echo "Plan Terraform"
-                        bat 'C:\\terraform\\terraform.exe plan'
+                        bat 'C:\\terraform\\terraform.exe plan -out=tfplan'
                            }
                  }
         }
@@ -53,10 +53,16 @@ pipeline {
                 clientSecretVariable: 'ARM_CLIENT_SECRET',
                 tenantIdVariable: 'ARM_TENANT_ID')]){
                     echo "Apply Terraform"
-                    bat 'C:\\terraform\\terraform.exe apply'
+                    bat 'C:\\terraform\\terraform.exe apply -auto-approve tfplan'
                 }
             }
         }
+
+          stage('Terraform Validate'){
+            steps {
+                    echo 'Validating Terraform'
+                    bat 'C:\\terraform\\terraform.exe validate'
+            }
     }
 post {
     failure {
