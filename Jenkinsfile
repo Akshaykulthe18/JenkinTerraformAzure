@@ -14,10 +14,10 @@ pipeline {
         
         stage('Terraform Init'){
             steps{
-                    bat """                    
-                    echo "Initialising Terraform"
-                    start 'terraform init'
-                    """
+                echo 'Initialising Terraform'
+                bat '''
+                    terraform init
+                '''
             }
         }
         stage('Terraform Validate'){
