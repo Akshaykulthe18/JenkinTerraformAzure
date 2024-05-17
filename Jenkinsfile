@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Terraform Init'){
             steps{
-                    sh """                    
+                    bat """                    
                     echo "Initialising Terraform"
                     terraform init
                     """
@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Terraform Validate'){
             steps {
-                    sh """                    
+                    bat """                    
                     echo "validating Terraform Code"
                     terraform validate
                     """
@@ -40,7 +40,7 @@ pipeline {
                     clientSecretVariable: 'ARM_CLIENT_SECRET',
                     tenantIdVariable: 'ARM_TENANT_ID'
                 )]) {
-                        sh """                    
+                        bat """                    
                         echo "Plan Terraform"
                         terraform plan
                         """
@@ -55,7 +55,7 @@ pipeline {
                 clientIdVariable: 'ARM_CLIENT_ID',
                 clientSecretVariable: 'ARM_CLIENT_SECRET',
                 tenantIdVariable: 'ARM_TENANT_ID')]){
-                    sh """                    
+                    bat """                    
                         echo "Apply Terraform"
                         terraform apply -lock=false -auto-approve
                         """
