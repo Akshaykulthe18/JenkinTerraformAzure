@@ -3,7 +3,7 @@ pipeline {
     agent any; 
     environment {
        MY_CRED = credentials('azurelogin')
-       MY_CRED_TENANT_ID       = "c48e4112-9a8f-418b-a115-e5929b0c550a"
+       ARM_TENANT_ID       = "c48e4112-9a8f-418b-a115-e5929b0c550a"
     } 
     stages {
         stage('Git checkout'){
